@@ -1,4 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## The Image browser project
+
+Functional requirements:
+- The user should be able to search for images using the UI
+- The user should be able to see the image results based on the searched term
+- The user should be able to select and view a specific image from the results
+
+
+Non-functional requirements:
+- The application should use an API for searching images based on a provided term
+- The application shall be written in React
+
 
 ## Getting Started
 
