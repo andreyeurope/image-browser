@@ -113,7 +113,7 @@ function useGet<ResponseData>(
     return () => {
       isLatest = false;
     };
-  });
+  }, []);
 
   return { ...state, load };
 }
