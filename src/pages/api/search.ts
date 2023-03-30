@@ -7,7 +7,7 @@ type ResponseData = {
 
 const searchApiKey = process.env.IMAGE_SEARCH_API_KEY || "";
 const searchApiBaseUrl = process.env.IMAGE_SEARCH_API_URL || "";
-const searchRoute = "/search";
+const searchRoute = "/search/photos";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,12 +16,13 @@ export default async function handler(
   const searchTerm = (req.query.query as string) || "";
   const searchApiUrl = new URL(searchApiBaseUrl + searchRoute);
   searchApiUrl.searchParams.append("query", searchTerm);
+  searchApiUrl.searchParams.append("page", "1");
 
   const response = await fetch(searchApiUrl.href, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: searchApiKey,
+      Authorization: `Client-ID ${searchApiKey}`,
     },
   });
 
