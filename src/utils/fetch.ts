@@ -8,9 +8,8 @@ export default async function fetch(url: string, options?: RequestInit) {
   } catch {
     throw new Error("Error fetching from URL");
   }
-
   const contentType = response.headers.get("content-type");
-  if (contentType && contentType.indexOf("application/json")) {
+  if (contentType && contentType.includes("application/json")) {
     const json = await response.json();
     if (response.ok) {
       return json;
