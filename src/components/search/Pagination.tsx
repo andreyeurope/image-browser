@@ -1,4 +1,4 @@
-export function Pagination(props: {
+export default function Pagination(props: {
   currentPage: number;
   totalResults: number;
   pageSize: number;
