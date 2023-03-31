@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import ImageGrid from "@/components/search/ImageGrid";
 import Pagination from "@/components/search/Pagination";
 import SearchBar from "@/components/search/SearchBar";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import Modal from "@/components/common/Modal";
 import ImagePreviewModal from "@/components/search/ImagePreviewModal";
 
 export default function Home() {
