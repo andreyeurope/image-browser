@@ -1,10 +1,13 @@
 import Head from "next/head";
 import useGet from "@/hooks/useGet";
-import { SearchResult } from "@/types/search";
+import { Photo, SearchResult } from "@/types/search";
 import { useEffect, useState } from "react";
-import { ImageGrid } from "@/components/search/ImageGrid";
-import { Pagination } from "@/components/search/Pagination";
+import ImageGrid from "@/components/search/ImageGrid";
+import Pagination from "@/components/search/Pagination";
 import SearchBar from "@/components/search/SearchBar";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import Modal from "@/components/common/Modal";
+import ImagePreviewModal from "@/components/search/ImagePreviewModal";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -14,6 +17,26 @@ export default function Home() {
     page: page,
   });
 
+  const [isImagePreviewOpen, setImagePreviewOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo>();
+
+  const openImagePreview = (photo: Photo) => {
+    setSelectedPhoto(photo);
+    setImagePreviewOpen(true);
+    console.log("called");
+  };
+
+  const closeImagePreview = () => {
+    setImagePreviewOpen(false);
+    setSelectedPhoto(undefined);
+  };
+
+  useEffect(() => {
+    if (!isImagePreviewOpen) {
+      closeImagePreview();
+    }
+  }, [isImagePreviewOpen]);
+
   useEffect(() => {
     load();
   }, [page]);
@@ -22,10 +45,6 @@ export default function Home() {
     const refetch = setTimeout(() => load(), 2000);
     return () => clearTimeout(refetch);
   }, [query]);
-
-  if (isLoading) {
-    return <>Loading images..</>;
-  }
 
   if (!data) {
     return <>No results..</>;
@@ -60,7 +79,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="min-h-full">
+        {selectedPhoto && isImagePreviewOpen && (
+          <ImagePreviewModal
+            isOpen={isImagePreviewOpen}
+            setOpen={setImagePreviewOpen}
+            photo={selectedPhoto}
+          />
+        )}
         <SearchBar setTerm={setQuery} />
+        {isLoading && <>Loading ...</>}
         {results.length == 0 && (
           <div className="flex h-36 text-center justify-center items-center">
             <p className="flex">
@@ -68,7 +95,7 @@ export default function Home() {
             </p>
           </div>
         )}
-        <ImageGrid photos={results} />
+        <ImageGrid photos={results} onPhotoClick={openImagePreview} />
         <footer>
           <Pagination
             currentPage={page}
